@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Back End Assessment</title>
+  </head>
+  <body class="container">
+    <button id="complimentButton">Get a compliment</button>
+    <button id='fortuneBtn'>Get a fortune</button>
+<input id=goalInput><button id=goalBtn>submit goal</button>
+<div id=goals></div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      const goalInput = document.querySelector('#goalInput');
+      const goals = document.querySelector('#goals');
+      const addGoal = ()=>{
+        // console.log(goalInput.value)
+        const goal = goalInput.value
+        let newGoal = document.createElement('p')
+        newGoal.textContent = goal
+        goals.appendChild(newGoal)
+
+        axios.post('http://localhost:4000/api/goals').then(
+        (req)=>{
+          goal: goalInput.value
+        }
+      )}
+
+const goalBtn = document.querySelector('#goalBtn')
+goalBtn.addEventListener('click',addGoal)
+
+      document.getElementById("complimentButton").onclick = function () {
+        axios.get("http://localhost:4000/api/compliment/")
+            .then(function (response) {
+              const data = response.data;
+              alert(data);
+            });
+          }
+
+      const fortune = document.querySelector('#fortuneBtn');
+       const getFortune = ()=>{
+        axios.get(`http://localhost:4000/api/fortune`)
+        .then( (res)=>{
+          const data = res.data;
+          alert(data);
+        })
+      }
+    fortune.addEventListener('click',getFortune)
+    </script>
+  </body>
+</html>

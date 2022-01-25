@@ -6,27 +6,38 @@
   <body class="container">
     <button id="complimentButton">Get a compliment</button>
     <button id='fortuneBtn'>Get a fortune</button>
-<input id=goalInput><button id=goalBtn>submit goal</button>
+<input id=goalInput><button id=goalBtn>submit goal</button> <button id=getBtn>view Goals</button>
 <div id=goals></div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
       const goalInput = document.querySelector('#goalInput');
       const goals = document.querySelector('#goals');
+      const getBtn = document.querySelector('#getBtn')
+      
+      const removeGoal = ()=>{
+        // console.log(event.target.innerText)
+        axios.post('http://localhost:4000/api/remove-goals',{
+          name: `${event.target.innerText}`
+        })
+      }
+      const getGoals = ()=>{
+            axios.get('http://localhost:4000/api/goals')
+            .then(goals.innerHTML = null)
+            .then(res => res.data.forEach((goal)=>{
+              const newGoal = goal
+              let li = document.createElement('p')
+              li.addEventListener('click',removeGoal)
+              li.textContent = newGoal
+              goals.appendChild(li)
+            }))
+      }
       const addGoal = ()=>{
-        // console.log(goalInput.value)
-        const goal = goalInput.value
-        let newGoal = document.createElement('p')
-        newGoal.textContent = goal
-        goals.appendChild(newGoal)
-
-        axios.post('http://localhost:4000/api/goals').then(
-        (req)=>{
-          goal: goalInput.value
-        }
-      )}
-
+        axios.post('http://localhost:4000/api/goals', {
+          name:`${goalInput.value}`})}
+    
 const goalBtn = document.querySelector('#goalBtn')
 goalBtn.addEventListener('click',addGoal)
+getBtn.addEventListener('click',getGoals)
 
       document.getElementById("complimentButton").onclick = function () {
         axios.get("http://localhost:4000/api/compliment/")

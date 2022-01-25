@@ -33,10 +33,18 @@ let randomFortune = fortunes[randomNum];
 res.status(200).send(randomFortune);
 });
 const goals = []
+
 app.post('/api/goals', (req, res)=>{
-  goals.push(req.data)
-  console.log(goals)
-  res.status(200).send(goals)
+  goals.push(req.body.name)
 })
+app.get('/api/goals', (req,res)=>{
+  res.status(200).send(goals)
+  // console.log(goals)
+})
+app.post('/api/remove-goals', (req, res)=>{
+  // console.log(req.body)
+  goals.splice(goals.indexOf(req.body.name),1)
+})
+
 
 app.listen(4000, () => console.log("Server running on 4000"));
